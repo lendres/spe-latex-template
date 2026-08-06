@@ -24,21 +24,51 @@
     \PackageError{spe}{One of the "journal" or "conference" options needs to be loaded}
 \fi \fi
 
+% Header
+\newcommand{\@spevenuename}{}
+\newcommand{\spevenuename}[1]{\renewcommand{\@spevenuename}{#1}}
+
+\newcommand{\@spemanuscriptnumber}{}
+\newcommand{\spemanuscriptnumber}[1]{\renewcommand{\@spemanuscriptnumber}{#1}}
+
+\newcommand{\@spetitle}{}
+\newcommand{\spetitle}[1]{\renewcommand{\@spetitle}{#1}}
+
+\newcommand{\@speauthors}{}
+\newcommand{\speauthors}[1]{\renewcommand{\@speauthors}{#1}}
+
+\newcommand{\@speaffiliations}{}
+\newcommand{\speaffiliations}[1]{\renewcommand{\@speaffiliations}{#1}}
+
+\newcommand{\@speauthoraffiliations}{}
+\newcommand{\speauthoraffiliations}[1]{\renewcommand{\@speauthoraffiliations}{#1}}
+
+\newcommand{\@specorrespondingauthor}{}
+\newcommand{\specorrespondingauthor}[1]{\renewcommand{\@specorrespondingauthor}{#1}}
+
+\newcommand{\@spekeywords}{}
+\newcommand{\spekeywords}[1]{\renewcommand{\@spekeywords}{#1}}
+
 \newcommand{\specheckargument}[1]{%
-    \ifx#1\undefined%
-        \PackageError{spe}{Need to define command "\string#1"} %
-    \fi%
+    \ifx#1\@empty
+        \begingroup
+            \edef\spe@name{\expandafter\@gobbletwo\string#1}%
+            \PackageError{spe}
+                {Required command "\expandafter\string\csname\spe@name\endcsname" has not been specified}
+                {Please define \expandafter\string\csname\spe@name\endcsname\space before using this package.}%
+        \endgroup
+    \fi
 }
 \newcommand{\specheckarguments}{%
-    \specheckargument{\spevenuename}%
-    \specheckargument{\spemanuscriptnumber}%
-    \specheckargument{\spetitle}%
-    \specheckargument{\speauthors}%
-    \specheckargument{\speaffiliations}%
-    \specheckargument{\speauthoraffiliations}%
+    \specheckargument{\@spevenuename}%
+    \specheckargument{\@spemanuscriptnumber}%
+    \specheckargument{\@spetitle}%
+    \specheckargument{\@speauthors}%
+    \specheckargument{\@speaffiliations}%
+    \specheckargument{\@speauthoraffiliations}%
     \if@isjournal%
-        \specheckargument{\specorrespondingauthor}%
-        \specheckargument{\spekeywords}%
+        \specheckargument{\@specorrespondingauthor}%
+        \specheckargument{\@spekeywords}%
     \fi%
 }
 
@@ -108,9 +138,9 @@
 
     \setsepchar{;}
 
-    \parselist{\speauthors}
-    \parselist{\speaffiliations}
-    \parselist{\speauthoraffiliations}
+    \parselist{\@speauthors}
+    \parselist{\@speaffiliations}
+    \parselist{\@speauthoraffiliations}
     \if@isjournal
         \parselist{\specorrespondingauthor}
         \parselist{\spekeywords}
@@ -118,26 +148,26 @@
 
     \begin{flushleft}
 
-        \spevenuename \vspace{5mm}
+        \@spevenuename \vspace{5mm}
 
-        \spemanuscriptnumber \vspace{5mm}
+        \@spemanuscriptnumber \vspace{5mm}
 
         \begin{center}
-        \huge \spetitle \vspace{5mm}
+        \huge \@spetitle \vspace{5mm}
         \end{center}
 
         \textbf{%
-            \foreach \index in {1, ..., \speauthorslen} {%
+            \foreach \index in {1, ..., \@speauthorslen} {%
                 \newcommand{\spetempauthor}{%
-                    \speauthors[\index]%
-                    \textsuperscript{\speauthoraffiliations[\index]}%
-                    \if@isjournal \ifnum \index = \latexmath{\specorrespondingauthor[1]}%
+                    \@speauthors[\index]%
+                    \textsuperscript{\@speauthoraffiliations[\index]}%
+                    \if@isjournal \ifnum \index = \latexmath{\@specorrespondingauthor[1]}%
                         *%
                     \fi\fi%
                 }%
-                \ifnum \index < \latexmath{\speauthorslen - 1}%
+                \ifnum \index < \latexmath{\@speauthorslen - 1}%
                     \spetempauthor, %
-                \else \ifnum \index = \latexmath{\speauthorslen - 1}%
+                \else \ifnum \index = \latexmath{\@speauthorslen - 1}%
                     \spetempauthor~and %
                 \else%
                     \spetempauthor%
@@ -147,22 +177,22 @@
         }
 
         \vspace{5mm}
-        \foreach \index in {1, ..., \speaffiliationslen} {
+        \foreach \index in {1, ..., \@speaffiliationslen} {
             \textsuperscript{\index}%
-            \speaffiliations[\index]%
+            \@speaffiliations[\index]%
             \par%
         }
 
         \if@isjournal
             \vspace{3mm}
 
-            *Corresponding author; email: \url{\specorrespondingauthor[2]}
+            *Corresponding author; email: \url{\@specorrespondingauthor[2]}
             \vspace{3mm}
 
             \textbf{Keywords:}
-            \foreach \index in {1, ..., \spekeywordslen} {%
-                \spekeywords[\index]%
-                \ifnum \index < \latexmath{\spekeywordslen}%
+            \foreach \index in {1, ..., \@spekeywordslen} {%
+                \@spekeywords[\index]%
+                \ifnum \index < \latexmath{\@spekeywordslen}%
                     ;
                 \fi%
             }

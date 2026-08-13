@@ -32,8 +32,13 @@
 \renewcommand*{\bibpagespunct}{\addcolon\space}
 \renewcommand*{\finentrypunct}{\addperiod}
 \renewcommand*{\multinamedelim}{\addcomma\space}
-\renewcommand*{\finalnamedelim}{\addcomma\space and\space}
-\renewcommand*{\finalandcomma}{}
+\DeclareDelimFormat{finalnamedelim}{%
+  \ifnumgreater{\value{liststop}}{2}
+    {\finalandcomma\addspace}
+    {\addspace}%
+  \bibstring{and}\space
+}
+\renewcommand*{\finalandcomma}{\addcomma}
 \DeclareDelimFormat{andothersdelim}{\addspace}
 \DeclareDelimFormat[bib,biblist]{andothersdelim}{\addspace}
 \DefineBibliographyStrings{english}{%

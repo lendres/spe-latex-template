@@ -115,7 +115,7 @@
 % Section headings
 \RequirePackage{titlesec}
 \titleformat{\section}[hang]{\Large \bfseries}{\thesection.}{1em}{}
-\titleformat{\subsection}[runin]{\normalsize \bfseries}{\thesubsection.}{1em}{}[.]
+\titleformat{\subsection}[hang]{\normalsize \bfseries}{\thesubsection.}{1em}{}
 \titleformat{\subsubsection}[runin]{\normalsize \bfseries \itshape}{\thesubsubsection.}{1em}{\indent}[.]
 
 \newcommand{\spesection}[1]{\section*{#1} \setcurrentname{#1}}

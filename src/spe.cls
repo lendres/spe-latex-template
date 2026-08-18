@@ -45,6 +45,7 @@
 \RequirePackage[hyperref]{xcolor}
 \definecolor{spelink}{HTML}{172b81}
 
+\RequirePackage{titlesec}
 \RequirePackage[hidelinks, urlcolor=spelink, citecolor=black, linkcolor=black, colorlinks=true]{hyperref}
 \RequirePackage{listofitems}
 \RequirePackage{pgffor}
@@ -84,7 +85,7 @@
 \DeclareFieldFormat{url}{\url{#1}}
 
 % Section headings
-\RequirePackage{titlesec}
+% The package import of "titlesec" is done above because it needs to be before "hyperref".
 \titleformat{\section}[hang]{\Large \bfseries}{\thesection.}{1em}{}
 \titleformat{\subsection}[runin]{\normalsize \bfseries}{\thesubsection.}{1em}{}[.]
 \titleformat{\subsubsection}[runin]{\normalsize \bfseries \itshape}{\thesubsubsection.}{1em}{\indent}[.]

@@ -103,7 +103,6 @@
 \newcommand{\sperefp}[1]{(\speref{#1})}
 \newcommand{\spefirstref}[1]{\textbf{\speref{#1}}}
 \newcommand{\spefirstrefp}[1]{\textbf{\sperefp{#1}}}
-\newcommand\setcurrentname[1]{\def\@currentlabelname{``\textit{#1}''}}
 
 % Citations
 \usepackage[

@@ -90,9 +90,19 @@
 \titleformat{\subsection}[runin]{\normalsize \bfseries}{\thesubsection.}{1em}{}[.]
 \titleformat{\subsubsection}[runin]{\normalsize \bfseries \itshape}{\thesubsubsection.}{1em}{\indent}[.]
 
-\newcommand{\spesection}[1]{\section*{#1} \setcurrentname{#1}}
-\newcommand{\spesubsection}[1]{\subsection*{#1} \setcurrentname{#1}}
-\newcommand{\spesubsubsection}[1]{\subsubsection*{#1} \setcurrentname{#1}}
+% Prevent numbering for the unstarred versions of the section commands.
+\setcounter{secnumdepth}{0}
+
+% Has to be done after loading the "hyperref" package, which loads the "nameref" package.
+\NewCommandCopy{\@nameref}{\nameref}
+\RenewDocumentCommand{\nameref}{s m}{%
+    \textit{%
+        \IfBooleanTF{#1}
+            {\@nameref*{#2}}
+            {\@nameref{#2}}%
+    }%
+}
+
 \newcommand{\spesubsubsubsection}[1]{~\newline \indent \textit{#1.}}
 
 % Title

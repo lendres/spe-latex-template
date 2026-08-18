@@ -103,7 +103,7 @@
     }%
 }
 
-\newcommand{\spesubsubsubsection}[1]{~\newline \indent \textit{#1.}}
+\newcommand{\subsubsubsection}[1]{~\newline \indent \textit{#1.}}
 
 % Title
 \newcommand{\latexmath}[1]{

@@ -109,7 +109,8 @@
 \usepackage[
   backend=biber,
   style=spe,
-  citestyle=spe
+  citestyle=spe,
+  datamodel=spe
 ]{biblatex}
 
 % Section headings

@@ -65,6 +65,7 @@
     {#1\isdot}}
 \DeclareFieldFormat{volume}{Vol\adddot\space #1}
 \DeclareFieldFormat{number}{\mkbibparens{#1}}
+\DeclareFieldFormat{speid}{#1}
 \DeclareFieldFormat{url}{#1}
 \DeclareFieldFormat{urldate}{(accessed\space\thefield{urlday}\space\mkbibmonth{\thefield{urlmonth}}\space\thefield{urlyear})}
 \urlstyle{same}
@@ -147,6 +148,10 @@
   \printfield{number}}
 
 \renewbibmacro*{doi+eprint+url}{%
+  \iffieldundef{speid}
+    {}
+    {\printfield{speid}%
+     \newunit\newblock}%
   \usebibmacro{spe:doi+url}}
 
 % ---------- Bibliography drivers ----------

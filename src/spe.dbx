@@ -1,0 +1,4 @@
+\ProvidesFile{spe.dbx}[2026/08/20 SPE bibliography data model]
+
+\DeclareDatamodelFields[type=field,datatype=literal]{speid}
+\DeclareDatamodelEntryfields{speid}

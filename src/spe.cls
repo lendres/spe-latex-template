@@ -116,8 +116,11 @@
 % Section headings
 \RequirePackage{titlesec}
 \titleformat{\section}[hang]{\Large \bfseries}{\thesection.}{1em}{}
-\titleformat{\subsection}[runin]{\normalsize \bfseries}{\thesubsection.}{1em}{}[.]
-\titleformat{\subsubsection}[runin]{\normalsize \bfseries \itshape}{\thesubsubsection.}{1em}{\indent}[.]
+\titleformat{\subsection}[hang]{\normalsize \bfseries}{\thesubsection.}{1em}{}
+\titleformat{\subsubsection}[runin]{\normalsize \bfseries \itshape}{\thesubsubsection.}{1em}{}[.]
+
+\titlespacing*{\section}{0pt}{2.0ex plus 0.5ex minus 0.2ex}{0.6ex}
+\titlespacing*{\subsection}{0pt}{1.5ex plus 0.4ex minus 0.2ex}{0.4ex}
 
 \newcommand{\spesection}[1]{\section*{#1} \setcurrentname{#1}}
 \newcommand{\spesubsection}[1]{\subsection*{#1} \setcurrentname{#1}}

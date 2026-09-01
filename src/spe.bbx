@@ -1,0 +1,383 @@
+\ProvidesFile{spe.bbx}[2026/04/14 SPE bibliography style]
+\RequireBibliographyStyle{authoryear}
+
+\ExecuteBibliographyOptions{
+	sorting=nyt,
+	sortcites=true,
+	maxbibnames=3,
+	minbibnames=3,
+	maxcitenames=2,
+	mincitenames=1,
+	uniquename=init,
+	giveninits=true,
+	uniquelist=false,
+	doi=true,
+	url=false,
+	isbn=false,
+	eprint=false,
+	date=year,
+	dashed=false
+}
+
+% ---------- General formatting ----------
+\DeclareNameAlias{default}{family-given}
+\DeclareNameAlias{sortname}{family-given}
+\DeclareNameAlias{author}{family-given}
+\DeclareNameAlias{editor}{family-given}
+
+\renewcommand*{\newunitpunct}{\addperiod\space}
+\renewcommand*{\labelnamepunct}{\addperiod\space}
+\renewcommand*{\subtitlepunct}{\addcolon\space}
+\renewcommand*{\intitlepunct}{\addspace}
+\renewcommand*{\bibpagespunct}{\addcolon\space}
+\renewcommand*{\finentrypunct}{\addperiod}
+\renewcommand*{\multinamedelim}{\addcomma\space}
+\DeclareDelimFormat{finalnamedelim}{%
+  \ifnumgreater{\value{liststop}}{2}
+    {\finalandcomma\addspace}
+    {\addspace}%
+  \bibstring{and}\space
+}
+\renewcommand*{\finalandcomma}{\addcomma}
+\DeclareDelimFormat{andothersdelim}{\addspace}
+\DeclareDelimFormat[bib,biblist]{andothersdelim}{\addspace}
+\DefineBibliographyStrings{english}{%
+  andothers = {et\addabbrvspace al\adddot},
+  editor = {ed\adddot},
+  editors = {eds\adddot},
+  byeditor = {ed\adddot},
+  in = {In},
+  mathesis = {MS thesis},
+  phdthesis = {PhD dissertation},
+  forthcoming = {forthcoming}
+}
+
+% No quotes around titles.
+\DeclareFieldFormat{title}{#1}
+\DeclareFieldFormat[article,inbook,incollection,inproceedings,patent,thesis,unpublished,report,misc]{title}{#1}
+\DeclareFieldFormat[article]{journaltitle}{\mkbibemph{#1}}
+\DeclareFieldFormat{booktitle}{#1}
+\DeclareFieldFormat{pages}{#1}
+\DeclareFieldFormat{chapter}{Chap\adddot\space #1}
+\DeclareFieldFormat{edition}{%
+  \ifinteger{#1}
+    {\mkbibordedition{#1}\addspace edition}
+    {#1\isdot}}
+\DeclareFieldFormat{volume}{Vol\adddot\space #1}
+\DeclareFieldFormat{number}{\mkbibparens{#1}}
+\DeclareFieldFormat{speid}{#1}
+\DeclareFieldFormat{url}{#1}
+\DeclareFieldFormat{urldate}{(accessed\space\thefield{urlday}\space\mkbibmonth{\thefield{urlmonth}}\space\thefield{urlyear})}
+\urlstyle{same}
+\DeclareFieldFormat{doi}{%
+  \ifhyperref
+    {\href{https://doi.org/#1}{\nolinkurl{https://doi.org/#1}}}
+    {\nolinkurl{https://doi.org/#1}}%
+}
+\DeclareFieldFormat{eprint:arxiv}{arXiv\addcolon #1}
+\DeclareFieldFormat{patenttype}{#1\addnbspace No\adddot}
+\DeclareFieldFormat{institution+location}{#1}
+\DeclareFieldFormat{thesistype}{#1}
+
+% Print year immediately after authors.
+\renewbibmacro*{date+extradate}{%
+  \printtext[parens]{}%
+  \printfield{year}%
+  \printfield{extrayear}}
+
+% But SPE uses plain year followed by period in bibliography, not parentheses.
+\renewbibmacro*{author/translator+others}{%
+  \ifnameundef{author}
+    {\ifnameundef{translator}
+       {\usebibmacro{editor+others}}
+       {\usebibmacro{translator+others}}}
+    {\printnames{author}%
+     \setunit{\labelnamepunct}\newblock}}
+
+\newbibmacro*{spe:year}{%
+  \printfield{year}%
+  \printfield{extrayear}}
+
+% Remove Oxford-comma behavior before truncated name lists like "Smith, A., Jones, B., Kent, C. et al."
+% BibLaTeX's English localization can reintroduce a comma via \finalandcomma,
+% so we override the macro that prints "et al." directly.
+\renewbibmacro*{name:andothers}{%
+  \ifboolexpr{%
+    test {\ifnumequal{\value{listcount}}{\value{liststop}}}%
+    and
+    test \ifmorenames
+  }
+    {\printdelim{andothersdelim}\bibstring{andothers}}
+    {}}
+
+\newbibmacro*{spe:doi+url}{%
+  \iffieldundef{doi}
+    {} %\usebibmacro{url+urldate}
+    {\printfield{doi}}}
+
+\newbibmacro*{spe:publisher+location}{%
+  \iflistundef{location}
+    {\printlist{publisher}}
+    {\printlist{location}%
+     \setunit{\addcolon\space}%
+     \printlist{publisher}}}
+
+\newbibmacro*{spe:in}{%
+  \printtext{In\space}}
+
+\newbibmacro*{spe:presentedat}{%
+  \printtext{Presented at the\space}}
+
+\renewbibmacro*{volume+number+eid}{%
+  \printfield{volume}%
+  \setunit{\addspace}%
+  \printfield{number}%
+  \setunit{\addcolon\space}%
+  \printfield{eid}}
+
+\renewbibmacro*{journal+issuetitle}{%
+  \usebibmacro{journal}%
+  \setunit*{\addspace}%
+  \usebibmacro{issue+date}%
+  \newunit}
+
+% Avoid month/day in normal published journal articles unless user stores only date.
+\renewbibmacro*{issue+date}{%
+  \printfield{volume}%
+  \setunit{\addspace}%
+  \printfield{number}}
+
+\renewbibmacro*{doi+eprint+url}{%
+  \iffieldundef{speid}
+    {}
+    {\printfield{speid}%
+     \newunit\newblock}%
+  \usebibmacro{spe:doi+url}}
+
+% ---------- Bibliography drivers ----------
+\DeclareBibliographyDriver{article}{%
+  \usebibmacro{bibindex}%
+  \usebibmacro{begentry}%
+  \usebibmacro{author/translator+others}%
+  \usebibmacro{spe:year}%
+  \newunit\newblock
+  \printfield{title}%
+  \newunit\newblock
+  \printfield{journaltitle}%
+  \setunit{\addspace}%
+  \printfield{volume}%
+  \setunit{\addspace}%
+  \iffieldundef{number}
+    {}
+    {\setunit{\addspace}%
+     \printtext{\mkbibparens{\printfield{number}}}}%
+  \setunit{\addcolon\space}%
+  \iffieldundef{pages}
+    {\printfield{eid}}
+    {\printfield{pages}}%
+  \newunit\newblock
+  \usebibmacro{doi+eprint+url}%
+  \usebibmacro{finentry}}
+
+\DeclareBibliographyDriver{book}{%
+  \usebibmacro{bibindex}%
+  \usebibmacro{begentry}%
+  \ifnameundef{author}
+    {\ifnameundef{editor}
+       {}
+       {\printnames{editor}\setunit{\addcomma\space}\printtext{ed\adddot}}}
+    {\printnames{author}}%
+  \setunit{\labelnamepunct}\newblock
+  \usebibmacro{spe:year}%
+  \newunit\newblock
+  \printfield{title}%
+  \iffieldundef{edition}{}{
+    \setunit{\addcomma\space}%
+    \printfield{edition}}
+  \iffieldundef{volume}{}{
+    \setunit{\addcomma\space}%
+    \printfield{volume}}
+  \newunit\newblock
+  \usebibmacro{spe:publisher+location}%
+  \newunit\newblock
+  \usebibmacro{doi+eprint+url}%
+  \usebibmacro{finentry}}
+
+\DeclareBibliographyDriver{inbook}{%
+  \usebibmacro{bibindex}%
+  \usebibmacro{begentry}%
+  \usebibmacro{author/translator+others}%
+  \usebibmacro{spe:year}%
+  \newunit\newblock
+  \printfield{title}%
+  \newunit\newblock
+  \usebibmacro{spe:in}%
+  \printfield{booktitle}%
+  \iffieldundef{editor}{}{
+    \setunit{\addcomma\space}%
+    \printtext{ed\adddot\space}\printnames{editor}}
+  \iffieldundef{chapter}{}{
+    \setunit{\addcomma\space}%
+    \printfield{chapter}}
+  \iffieldundef{pages}{}{
+    \setunit{\addcomma\space}%
+    \printfield{pages}}
+  \newunit\newblock
+  \usebibmacro{spe:publisher+location}%
+  \newunit\newblock
+  \usebibmacro{doi+eprint+url}%
+  \usebibmacro{finentry}}
+
+\DeclareBibliographyDriver{incollection}{%
+  \usebibmacro{bibindex}%
+  \usebibmacro{begentry}%
+  \usebibmacro{author/translator+others}%
+  \usebibmacro{spe:year}%
+  \newunit\newblock
+  \printfield{title}%
+  \newunit\newblock
+  \usebibmacro{spe:in}%
+  \printfield{booktitle}%
+  \iffieldundef{editor}{}{
+    \setunit{\addcomma\space}%
+    \printtext{ed\adddot\space}\printnames{editor}}
+  \iffieldundef{chapter}{}{
+    \setunit{\addcomma\space}%
+    \printfield{chapter}}
+  \iffieldundef{pages}{}{
+    \setunit{\addcomma\space}%
+    \printfield{pages}}
+  \newunit\newblock
+  \usebibmacro{spe:publisher+location}%
+  \newunit\newblock
+  \usebibmacro{doi+eprint+url}%
+  \usebibmacro{finentry}}
+
+\DeclareBibliographyDriver{inproceedings}{%
+  \usebibmacro{bibindex}%
+  \usebibmacro{begentry}%
+  \usebibmacro{author/translator+others}%
+  \usebibmacro{spe:year}%
+  \newunit\newblock
+  \printfield{title}%
+  \newunit\newblock
+  \usebibmacro{spe:presentedat}%
+  \printfield{booktitle}%
+  \iffieldundef{venue}{}{
+    \setunit{\addcomma\space}%
+    \printfield{venue}}
+  \iffieldundef{location}{}{
+    \setunit{\addcomma\space}%
+    \printlist{location}}
+  \iffieldundef{eventdate}{}{
+    \setunit{\addcomma\space}%
+    \printeventdate}
+  \iffieldundef{pages}{}{
+    \setunit{\addcomma\space}%
+    \printfield{pages}}
+  \newunit\newblock
+  \usebibmacro{doi+eprint+url}%
+  \usebibmacro{finentry}}
+
+\DeclareBibliographyDriver{online}{%
+  \usebibmacro{bibindex}%
+  \usebibmacro{begentry}%
+  \ifnameundef{author}
+    {\ifnameundef{editor}
+       {\iflistundef{organization}{} {\printlist{organization}}}
+       {\printnames{editor}}}
+    {\printnames{author}}%
+  \setunit{\labelnamepunct}\newblock
+  \usebibmacro{spe:year}%
+  \newunit\newblock
+  \printfield{title}%
+  \iffieldundef{journaltitle}{}{
+    \newunit\newblock
+    \printfield{journaltitle}%
+    \iffieldundef{date}{}{
+      \setunit{\addspace}%
+      \printdate}}
+  \newunit\newblock
+  \usebibmacro{url+urldate}%
+  \usebibmacro{finentry}}
+
+\DeclareBibliographyDriver{report}{%
+  \usebibmacro{bibindex}%
+  \usebibmacro{begentry}%
+  \ifnameundef{author}
+    {\iflistundef{organization}{} {\printlist{organization}}}
+    {\printnames{author}}%
+  \setunit{\labelnamepunct}\newblock
+  \usebibmacro{spe:year}%
+  \newunit\newblock
+  \printfield{title}%
+  \iffieldundef{type}{}{
+    \setunit{\addcomma\space}%
+    \printfield{type}}
+  \iffieldundef{number}{}{
+    \setunit{\addcomma\space}%
+    \printfield{number}}
+  \newunit\newblock
+  \iflistundef{institution}
+    {\usebibmacro{spe:publisher+location}}
+    {\printlist{institution}%
+     \iffieldundef{location}{}{
+       \setunit{\addcomma\space}%
+       \printlist{location}}}
+  \newunit\newblock
+  \usebibmacro{doi+eprint+url}%
+  \usebibmacro{finentry}}
+
+\DeclareBibliographyDriver{thesis}{%
+  \usebibmacro{bibindex}%
+  \usebibmacro{begentry}%
+  \printnames{author}%
+  \setunit{\labelnamepunct}\newblock
+  \usebibmacro{spe:year}%
+  \newunit\newblock
+  \printfield{title}%
+  \iffieldundef{type}{}{
+    \setunit{\addcomma\space}%
+    \printfield{type}}
+  \newunit\newblock
+  \printlist{institution}%
+  \iffieldundef{location}{}{
+    \setunit{\addcomma\space}%
+    \printlist{location}}
+  \newunit\newblock
+  \usebibmacro{doi+eprint+url}%
+  \usebibmacro{finentry}}
+
+\DeclareBibliographyDriver{patent}{%
+  \usebibmacro{bibindex}%
+  \usebibmacro{begentry}%
+  \printnames{author}%
+  \setunit{\labelnamepunct}\newblock
+  \usebibmacro{spe:year}%
+  \newunit\newblock
+  \printfield{title}%
+  \newunit\newblock
+  \printfield{type}%
+  \setunit{\addspace}%
+  \printfield{number}%
+  \newunit\newblock
+  \usebibmacro{doi+eprint+url}%
+  \usebibmacro{finentry}}
+
+\DeclareBibliographyDriver{misc}{%
+  \usebibmacro{bibindex}%
+  \usebibmacro{begentry}%
+  \ifnameundef{author}
+    {\iflistundef{organization}{} {\printlist{organization}}}
+    {\printnames{author}}%
+  \setunit{\labelnamepunct}\newblock
+  \iffieldundef{year}{}{% 
+    \usebibmacro{spe:year}%
+    \newunit\newblock}
+  \printfield{title}%
+  \iffieldundef{howpublished}{}{
+    \newunit\newblock
+    \printfield{howpublished}}
+  \newunit\newblock
+  \usebibmacro{doi+eprint+url}%
+  \usebibmacro{finentry}}

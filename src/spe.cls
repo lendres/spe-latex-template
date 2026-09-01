@@ -106,13 +106,12 @@
 \newcommand\setcurrentname[1]{\def\@currentlabelname{``\textit{#1}''}}
 
 % Citations
-\RequirePackage[bibstyle=authoryear, giveninits=true, uniquename=init, maxbibnames=3, minbibnames=3, style=authoryear, dashed=false]{biblatex}
-\DeclareFieldFormat*{title}{#1}
-\renewbibmacro{in:}{}
-\DeclareNameAlias{sortname}{family-given}
-\urlstyle{same}
-\DeclareFieldFormat{doi}{\url{https://doi.org/#1}}
-\DeclareFieldFormat{url}{\url{#1}}
+\usepackage[
+  backend=biber,
+  style=spe,
+  citestyle=spe,
+  datamodel=spe
+]{biblatex}
 
 % Section headings
 \RequirePackage{titlesec}

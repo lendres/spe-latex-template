@@ -1,0 +1,17 @@
+\ProvidesFile{spe.cbx}[2026/04/14 SPE author-year citation style]
+\RequireCitationStyle{authoryear}
+
+% SPE inline citations: (Smith 1990), Smith (1990), semicolons between refs.
+\renewcommand*{\nameyeardelim}{\addspace}
+\renewcommand*{\compcitedelim}{\addsemicolon\space}
+\renewcommand*{\multicitedelim}{\addsemicolon\space}
+\renewcommand*{\postnotedelim}{\addcomma\space}
+
+% Use et al. for 3+ authors in citations.
+\ExecuteBibliographyOptions{
+	maxcitenames=2,
+	mincitenames=1,
+	uniquename=init,
+	giveninits=true,
+	uniquelist=false
+}

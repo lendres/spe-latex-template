@@ -42,7 +42,7 @@
     \fi%
 }
 
-\RequirePackage[hyperref]{xcolor}
+\RequirePackage{xcolor}
 \definecolor{spelink}{HTML}{172b81}
 
 \RequirePackage[hidelinks, urlcolor=spelink, citecolor=black, linkcolor=black, colorlinks=true]{hyperref}

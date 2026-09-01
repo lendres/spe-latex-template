@@ -51,7 +51,7 @@ The `\spemaketitle` command creates the title block.
 Example:
 ```latex
 ...
-\spevenue{2024 SPE Annual Technical Conference and Exhibition}
+\spevenuename{2024 SPE Annual Technical Conference and Exhibition}
 \spemanuscriptnumber{SPE-123456-MS}
 \spetitle{My Awesome Paper}
 \speauthors{A. One; A. Two; A. Three; A. Four}

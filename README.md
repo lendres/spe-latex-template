@@ -18,8 +18,8 @@ Please feel free to open pull requests/issues for contribution and discussion.
 It suffices to use the class file as the project's *documentclass*.
 For this purpose, the user can either:
 
-1. Download the [*spe* class file](src/spe.cls) from the [*src* directory](src) to the same directory as the user's main LaTeX file.
-2. Clone the repository and make sure the [*src* directory](src) can be seen by LaTeX. 
+- Download the [*spe* class file](src/spe.cls) from the [*src* directory](src) to the same directory as the user's main LaTeX file.
+- Clone the repository and make sure the [*src* directory](src) can be seen by LaTeX. 
 As an example, in MiKTeX for Windows one can add it as a TEXMF root directory under [MiKTeX Console's settings](https://miktex.org/kb/texmf-roots).
 
 ### Usage
@@ -32,7 +32,7 @@ or
 \documentclass[conference]{spe}
 ```
 
-The following commands need to be defined for the title block. 
+The following commands need to be set for the title block. 
 For commands that hold more than one information, separate each by semicolons (e.g. multiple authors).
 
 | Command                  | Needed in `conference`? | Needed in `journal`? | Explanation                                                                            |
@@ -51,14 +51,14 @@ The `\spemaketitle` command creates the title block.
 Example:
 ```latex
 ...
-\newcommand{\spevenue}{2024 SPE Annual Technical Conference and Exhibition}
-\newcommand{\spemanuscriptnumber}{SPE-123456-MS}
-\newcommand{\spetitle}{My Awesome Paper}
-\newcommand{\speauthors}{A. One; A. Two; A. Three; A. Four}
-\newcommand{\speaffiliations}{My University, City One, TX, USA; Other Company, City Two, TX, USA}
-\newcommand{\speauthoraffiliations}{1; 1; 2; 1}
-\newcommand{\specorrespondingauthor}{1; email@myuniversity.edu}
-\newcommand{\spekeywords}{keyword1; keyword2}
+\spevenue{2024 SPE Annual Technical Conference and Exhibition}
+\spemanuscriptnumber{SPE-123456-MS}
+\spetitle{My Awesome Paper}
+\speauthors{A. One; A. Two; A. Three; A. Four}
+\speaffiliations{My University, City One, TX, USA; Other Company, City Two, TX, USA}
+\speauthoraffiliations{1; 1; 2; 1}
+\specorrespondingauthor{1; email@myuniversity.edu}
+\spekeywords{keyword1; keyword2}
 
 \begin{document}
 \spemaketitle
@@ -68,4 +68,4 @@ Example:
 To reference figures and tables, use `\speref` or `\sperefp`.
 If it's the first reference of an item in the paper, use `\spefirstref` or `\spefirstrefp`.
 
-For section headings, use the commands `\spesection`, `\spesubsection`, `\spesubsubsection` and `\spesubsubsubsection`.
+For section headings, use the commands `\section`, `\subsection`, `\subsubsection` and `\subsubsubsection`.
